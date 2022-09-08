@@ -1,0 +1,32 @@
+{
+  "name": "jsconfig-init",
+  "version": "0.1.0",
+  "description": "Turn on transpile-free type hinting for your vanilla JS projects #JSWithTypes",
+  "main": "index.js",
+  "bin": {
+    "jsconfig-init": "bin/jsconfig-init.js"
+  },
+  "scripts": {
+    "test": "node ./bin/jsconfig-init"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BeyondCodeBootcamp/jsconfig-init.git"
+  },
+  "keywords": [
+    "JSWithTypes",
+    "types",
+    "typed",
+    "vanillajs",
+    "type",
+    "hinting",
+    "linting",
+    "checking"
+  ],
+  "author": "AJ ONeal <aj@therootcompany.com> (https://throotcompany.com/)",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/BeyondCodeBootcamp/jsconfig-init/issues"
+  },
+  "homepage": "https://github.com/BeyondCodeBootcamp/jsconfig-init#readme"
+}
