@@ -7,7 +7,9 @@
     "jsconfig-init": "bin/jsconfig-init.js"
   },
   "scripts": {
-    "test": "node ./bin/jsconfig-init"
+    "test": "node ./bin/jsconfig-init",
+    "lint": "tsc -p ./jsconfig.json",
+    "fmt": "npx -p prettier@2 -- prettier -w '**/*.{js,md}'"
   },
   "repository": {
     "type": "git",
@@ -28,5 +30,8 @@
   "bugs": {
     "url": "https://github.com/BeyondCodeBootcamp/jsconfig-init/issues"
   },
-  "homepage": "https://github.com/BeyondCodeBootcamp/jsconfig-init#readme"
+  "homepage": "https://github.com/BeyondCodeBootcamp/jsconfig-init#readme",
+  "devDependencies": {
+    "@types/node": "^18.7.16"
+  }
 }
