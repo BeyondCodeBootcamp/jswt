@@ -1,6 +1,6 @@
 {
   "name": "jsconfig-init",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Turn on transpile-free type hinting for your vanilla JS projects #JSWithTypes",
   "main": "index.js",
   "bin": {
