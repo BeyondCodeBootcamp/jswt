@@ -36,7 +36,26 @@ Your project will look something like this:
         └── index.d.ts
 ```
 
-## Bonus package.json Config
+## Inner Workings
+
+1. Runs `tsc --init` with these options:
+   ```sh
+   npx -p typescript@4 -- \
+       tsc --init \
+       --allowJs --alwaysStrict --checkJs \
+       --moduleResolution node \
+       --noEmit --noImplicitAny --target es2022 \
+       --typeRoots './typings,./node_modules/@types'
+   ```
+2. Adds the following keys:
+   ```txt
+   "include": ["*.js", "bin/**/*.js", "lib/**/*.js", "src/**/*.js"]`
+   "exclude": ["node_modules"]
+   ```
+3. Renames `tsconfig.json` to `jsconfig.json` \
+   (and creates some placeholder files and dirs)
+
+## Bonus: `npm run lint`
 
 You may wish to add common script commands for `fmt` and `lint`:
 
@@ -45,7 +64,7 @@ npm pkg set scripts.lint="npx -p typescript@4 -- tsc -p ./jsconfig.json"
 npm pkg set scripts.fmt="npx -p prettier@2 -- prettier -w '**/*.{js,md}'"
 ```
 
-## Bonus Vim Config
+## Bonus: Vim Config
 
 It should Just Work™, but if your vim setup is a little custom, you may want to
 add or modify a line like this:
