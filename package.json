@@ -8,8 +8,8 @@
   },
   "scripts": {
     "test": "node ./bin/jsconfig-init",
-    "lint": "tsc -p ./jsconfig.json",
-    "fmt": "npx -p prettier@2 -- prettier -w '**/*.{js,md}'"
+    "lint": "npx -p typescript@4.x -- tsc -p ./jsconfig.json",
+    "fmt": "npx -p prettier@2.x -- prettier -w '**/*.{js,md}'"
   },
   "repository": {
     "type": "git",

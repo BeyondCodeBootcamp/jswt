@@ -27,6 +27,18 @@ async function main() {
   fh = await Fs.open("./typings/.gitkeep", "w");
   await fh.close();
 
+  await upsertNpmScript(
+    "lint",
+    "tsc",
+    "npx -p typescript@4.x -- tsc -p ./jsconfig.json",
+  );
+
+  await upsertNpmScript(
+    "fmt",
+    "prettier",
+    "npx -p prettier@2.x -- prettier -w '**/*.{js,md}'",
+  );
+
   let jsconfigTxt = JSON.stringify(jsconfig, null, 2);
   // for stderr / debug output
   console.error(`./jsconfig.json:`);
@@ -34,11 +46,6 @@ async function main() {
   console.error(``);
   console.error(`How to manually run the linter:`);
   console.error(`   tsc -p ./jsconfig.json`);
-  console.error(``);
-  console.error(`How to set 'npm run lint' script:`);
-  console.error(
-    `   npm pkg set scripts.lint='npx -p typescript -- tsc -p ./jsconfig.json'`,
-  );
   console.error(``);
   console.error(`How to configure vim:`);
   console.error(`    curl https://webi.sh/vim-essentials | sh`);
@@ -237,6 +244,32 @@ function ignoreNotFound(err) {
     return null;
   }
   throw err;
+}
+
+/**
+ * @param {String} scriptName - ex: lint, fmt, start
+ * @param {String} substr - don't update the script if this substring is found
+ * @param {String} scriptValue - the script
+ */
+async function upsertNpmScript(scriptName, substr, scriptValue) {
+  let result = await exec("npm", ["pkg", "get", `scripts.${scriptName}`]);
+  let curLintValue = result.stdout.trim();
+
+  if ("{}" === curLintValue) {
+    let allArgs = ["pkg", "set", `scripts.${scriptName}=${scriptValue}`];
+    await exec("npm", allArgs);
+    curLintValue = `"${scriptValue}"`;
+  }
+
+  if (!curLintValue.includes(substr)) {
+    let curLintScript = JSON.parse(curLintValue);
+    let allArgs = [
+      "pkg",
+      "set",
+      `scripts.${scriptName}=${curLintScript}; ${scriptValue}`,
+    ];
+    await exec("npm", allArgs);
+  }
 }
 
 /**
