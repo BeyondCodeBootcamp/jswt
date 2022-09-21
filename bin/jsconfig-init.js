@@ -217,7 +217,7 @@ async function parseJson5(tsconfigTxt) {
     // `/* ... */`
     // `   /* ... */   `
     return line
-      .replace(/(^|\s+)\/\*\s+.*\*\/(\s+|$)/, "")
+      .replace(/(^|\s+)\/\*\s+.*\*\/(\s+|,|$)/g, "$2")
       .replace(/\s*\/\/.*/, "");
   });
   let tsconfig = lines.join("\n");
