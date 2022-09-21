@@ -13,8 +13,11 @@ function showHelp() {
   console.info("    jswt <subcommand> [opts]");
   console.info();
   console.info("Subcommands:");
-  console.info("    help        - display this menu");
-  console.info("    init        - initialize this project");
+  console.info("    help                    - display this menu");
+  console.info("    init                    - initialize this project");
+  console.info(
+    "    reexport [--global]     - reexport typedefs to index.js (or types.js)",
+  );
   console.info();
 }
 
