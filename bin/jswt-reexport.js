@@ -100,7 +100,7 @@ async function main() {
       "",
       "// these typedef reexports will be available to dependent packages",
       "/**",
-    ].concat(defLines, [" */", ""]);
+    ].concat(indexLines, [" */", ""]);
 
     await Fs.readFile("./index.js", "utf8")
       .then(function (txt) {

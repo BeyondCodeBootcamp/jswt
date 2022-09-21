@@ -4,6 +4,5 @@
 // global types (DO NOT include in `package.json.files`)
 
 /**
- * @typedef {import('./bin/jswt-init.js').MyError} MyError
- * @typedef {import('./bin/jswt-reexport.js').Typedef} Typedef
+ * N/A - see reexports in 'index.js'
  */
