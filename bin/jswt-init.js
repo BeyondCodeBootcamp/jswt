@@ -39,6 +39,12 @@ async function main() {
     "npx -p prettier@2.x -- prettier -w '**/*.{js,md}'",
   );
 
+  await upsertNpmScript(
+    "prepublish",
+    "reexport",
+    "npx -p jswt@1.x -- reexport",
+  );
+
   let jsconfigTxt = JSON.stringify(jsconfig, null, 2);
   // for stderr / debug output
   console.error(`./jsconfig.json:`);
