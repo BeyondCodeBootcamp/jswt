@@ -1,4 +1,4 @@
-# jsconfig-init
+# [JS with Types](https://jswt.dev)
 
 Turn on transpile-free type hinting for your vanilla JS projects #JSWithTypes
 
@@ -9,7 +9,7 @@ Turn on transpile-free type hinting for your vanilla JS projects #JSWithTypes
 2. Turn on type linting 💪
    ```sh
    # Create a properly configured `jsconfig.json`
-   npx jsconfig-init
+   npx jswt init
    ```
 3. Profit!
 
