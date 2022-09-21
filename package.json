@@ -5,7 +5,8 @@
   "main": "index.js",
   "bin": {
     "jswt": "bin/jswt.js",
-    "init": "bin/jswt-init.js"
+    "init": "bin/jswt-init.js",
+    "reexport": "bin/jswt-reexport.js"
   },
   "scripts": {
     "test": "node ./bin/jswt-init.js",
