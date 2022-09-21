@@ -5,12 +5,14 @@
   "main": "index.js",
   "bin": {
     "jswt": "bin/jswt.js",
-    "init": "bin/jswt-init.js"
+    "init": "bin/jswt-init.js",
+    "reexport": "bin/jswt-reexport.js"
   },
   "scripts": {
     "test": "node ./bin/jswt-init.js",
     "lint": "npx -p typescript@4.x -- tsc -p ./jsconfig.json",
     "fmt": "npx -p prettier@2.x -- prettier -w '**/*.{js,md}'",
+    "prepublish": "npx -p jswt@1.x -- reexport",
     "version": "npm version -m \"chore(release): bump to v%s\""
   },
   "repository": {
