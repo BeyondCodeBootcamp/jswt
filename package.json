@@ -1,20 +1,21 @@
 {
-  "name": "jsconfig-init",
-  "version": "1.0.1",
+  "name": "jswt",
+  "version": "1.0.2",
   "description": "Turn on transpile-free type hinting for your vanilla JS projects #JSWithTypes",
   "main": "index.js",
   "bin": {
-    "jsconfig-init": "bin/jsconfig-init.js"
+    "jswt": "bin/jswt.js",
+    "init": "bin/jswt-init.js"
   },
   "scripts": {
-    "test": "node ./bin/jsconfig-init",
+    "test": "node ./bin/jswt-init.js",
     "lint": "npx -p typescript@4.x -- tsc -p ./jsconfig.json",
     "fmt": "npx -p prettier@2.x -- prettier -w '**/*.{js,md}'",
     "version": "npm version -m \"chore(release): bump to v%s\""
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BeyondCodeBootcamp/jsconfig-init.git"
+    "url": "git+https://github.com/BeyondCodeBootcamp/jswt.git"
   },
   "keywords": [
     "JSWithTypes",
@@ -29,9 +30,9 @@
   "author": "AJ ONeal <aj@therootcompany.com> (https://throotcompany.com/)",
   "license": "SEE LICENSE IN LICENSE",
   "bugs": {
-    "url": "https://github.com/BeyondCodeBootcamp/jsconfig-init/issues"
+    "url": "https://github.com/BeyondCodeBootcamp/jswt/issues"
   },
-  "homepage": "https://github.com/BeyondCodeBootcamp/jsconfig-init#readme",
+  "homepage": "https://github.com/BeyondCodeBootcamp/jswt#readme",
   "devDependencies": {
     "@types/node": "^18.7.16"
   }
