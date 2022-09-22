@@ -20,11 +20,11 @@ async function main() {
     jsconfig = await createJsConfig(pkg, tsconfigTxt);
   }
 
-  let fh = await Fs.open("./types.js", "w");
+  let fh = await Fs.open("./types.js", "a");
   await fh.close();
 
   await Fs.mkdir("./typings", { recursive: true });
-  fh = await Fs.open("./typings/.gitkeep", "w");
+  fh = await Fs.open("./typings/.gitkeep", "a");
   await fh.close();
 
   await upsertNpmScript(
