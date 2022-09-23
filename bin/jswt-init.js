@@ -76,7 +76,17 @@ async function main() {
     ),
   );
 
-  await initFile(`./lib/${pkg.name}.js`, [`"use strict";`, ""].join("\n"));
+  await initFile(
+    `./lib/${pkg.name}.js`,
+    [
+      `"use strict";`,
+      "",
+      "let Foo = module.exports;",
+      "",
+      "Foo.answer = 42;",
+      "",
+    ].join("\n"),
+  );
 
   await initFile(
     "./types.js",
