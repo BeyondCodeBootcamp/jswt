@@ -27,16 +27,60 @@ async function main() {
   fh = await Fs.open("./typings/.gitkeep", "a");
   await fh.close();
 
+  await Fs.mkdir("./docs", { recursive: true });
+  fh = await Fs.open("./docs/.gitkeep", "a");
+  await fh.close();
+
+  await initFile(
+    "./.prettierignore",
+    ["docs", "node_modules", "package.json", "package-lock.json", ""].join(
+      "\n",
+    ),
+  );
+
+  await initFile(
+    "./jsdoc.conf.json",
+    JSON.stringify(
+      {
+        tags: {
+          allowUnknownTags: true,
+        },
+        source: {
+          // include all files ending in '.js' or '.jsx'
+          includePattern: ".+\\.js(x)?$",
+          // exclude all files beginning with '_'
+          excludePattern: "(^|\\/|\\\\)_",
+        },
+        plugins: [],
+        templates: {
+          cleverLinks: false,
+          monospaceLinks: false,
+          default: {
+            outputSourceFiles: true,
+          },
+        },
+      },
+      null,
+      2,
+    ),
+  );
+
   await upsertNpmScript(
-    "lint",
-    "tsc",
-    "npx -p typescript@4.x -- tsc -p ./jsconfig.json",
+    "doc",
+    "jsdoc",
+    "npx jsdoc@3.x --configure ./jsdoc.conf.json --destination ./docs --package ./package.json --readme ./README.md --access all --private --recurse ./lib/",
   );
 
   await upsertNpmScript(
     "fmt",
     "prettier",
     "npx -p prettier@2.x -- prettier -w '**/*.{js,md}'",
+  );
+
+  await upsertNpmScript(
+    "lint",
+    "tsc",
+    "npx -p typescript@4.x -- tsc -p ./jsconfig.json",
   );
 
   await upsertNpmScript(
@@ -250,6 +294,26 @@ function ignoreNotFound(err) {
     return null;
   }
   throw err;
+}
+
+/**
+ * @param {String} fileName - ex: .prettierignore
+ * @param {String} initValue - the contents of the file
+ */
+async function initFile(fileName, initValue) {
+  let txt = await Fs.readFile(fileName, "utf8").catch(function (err) {
+    if ("ENOENT" === err.code) {
+      return "";
+    }
+    throw err;
+  });
+
+  txt = txt.trim();
+  if (txt) {
+    return;
+  }
+
+  await Fs.writeFile(fileName, initValue, "utf8");
 }
 
 /**

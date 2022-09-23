@@ -12,7 +12,8 @@
     "test": "node ./bin/jswt-init.js",
     "lint": "npx -p typescript@4.x -- tsc -p ./jsconfig.json",
     "fmt": "npx -p prettier@2.x -- prettier -w '**/*.{js,md}'",
-    "prepublish": "npx -p jswt@1.x -- reexport"
+    "prepublish": "npx -p jswt@1.x -- reexport",
+    "doc": "npx jsdoc@3.x --configure ./jsdoc.conf.json --destination ./docs --package ./package.json --readme ./README.md --access all --private --recurse ./lib/"
   },
   "repository": {
     "type": "git",
