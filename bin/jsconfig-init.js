@@ -154,6 +154,9 @@ async function createTsConfig() {
   return tscTxt;
 }
 
+/**
+ * @returns Promise<String>
+ */
 async function getLatest20xx() {
   // error TS6046: Argument for '--target' option must be:
   // 'es3', ... 'es2022', 'esnext'.
@@ -169,6 +172,7 @@ async function getLatest20xx() {
       version = m[0];
       //console.log("version", version);
     }
+    return version;
   });
 }
 
