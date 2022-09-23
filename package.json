@@ -9,7 +9,8 @@
   "scripts": {
     "test": "node ./bin/jsconfig-init",
     "lint": "npx -p typescript@4.x -- tsc -p ./jsconfig.json",
-    "fmt": "npx -p prettier@2.x -- prettier -w '**/*.{js,md}'"
+    "fmt": "npx -p prettier@2.x -- prettier -w '**/*.{js,md}'",
+    "version": "npm version -m \"chore(release): bump to v%s\""
   },
   "repository": {
     "type": "git",
