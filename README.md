@@ -1,4 +1,4 @@
-# [JS with Types](https://jswt.dev)
+# [JS with Types](https://jswithtypes.com)
 
 Turn on transpile-free type hinting for your vanilla JS projects #JSWithTypes
 
