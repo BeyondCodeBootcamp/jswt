@@ -20,6 +20,8 @@ Works with **VS Code** out-of-the-box, and
 
 [![JS with Types conference title slide](https://jswithtypes.com/assets/utahjs-conf-2022-jswt-title-yt.png)](https://jswithtypes.com/)
 
+<https://jswithtypes.com>
+
 ## Layout
 
 Your project will look something like this:
