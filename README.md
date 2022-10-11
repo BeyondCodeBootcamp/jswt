@@ -16,6 +16,10 @@ Turn on transpile-free type hinting for your vanilla JS projects #JSWithTypes
 Works with **VS Code** out-of-the-box, and
 [Vim + ale](https://webinstall.dev/vim-essentials).
 
+## Watch the Presentation!
+
+[![JS with Types conference title slide](https://jswithtypes.com/assets/utahjs-conf-2022-jswt-title-yt.png)](https://jswithtypes.com/)
+
 ## Layout
 
 Your project will look something like this:
