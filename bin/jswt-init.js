@@ -26,14 +26,14 @@ async function main() {
     jsconfig = await createJsConfig(pkg, tsconfigTxt);
   }
 
-  await Fs.mkdir("./docs", { recursive: true });
-  let fh = await Fs.open("./docs/.gitkeep", "a");
-  await fh.close();
+  // await Fs.mkdir("./docs", { recursive: true });
+  // let fh = await Fs.open("./docs/.gitkeep", "a");
+  // await fh.close();
 
   await Fs.mkdir("./lib", { recursive: true });
 
   await Fs.mkdir("./typings", { recursive: true });
-  fh = await Fs.open("./typings/.gitkeep", "a");
+  let fh = await Fs.open("./typings/.gitkeep", "a");
   await fh.close();
 
   await initFile(
@@ -55,32 +55,32 @@ async function main() {
     ].join("\n"),
   );
 
-  await initFile(
-    "./jsdoc.conf.json",
-    JSON.stringify(
-      {
-        tags: {
-          allowUnknownTags: true,
-        },
-        source: {
-          // include all files ending in '.js' or '.jsx'
-          includePattern: ".+\\.js(x)?$",
-          // exclude all files beginning with '_'
-          excludePattern: "(^|\\/|\\\\)_",
-        },
-        plugins: [],
-        templates: {
-          cleverLinks: false,
-          monospaceLinks: false,
-          default: {
-            outputSourceFiles: true,
-          },
-        },
-      },
-      null,
-      2,
-    ),
-  );
+  // await initFile(
+  //   "./jsdoc.conf.json",
+  //   JSON.stringify(
+  //     {
+  //       tags: {
+  //         allowUnknownTags: true,
+  //       },
+  //       source: {
+  //         // include all files ending in '.js' or '.jsx'
+  //         includePattern: ".+\\.js(x)?$",
+  //         // exclude all files beginning with '_'
+  //         excludePattern: "(^|\\/|\\\\)_",
+  //       },
+  //       plugins: [],
+  //       templates: {
+  //         cleverLinks: false,
+  //         monospaceLinks: false,
+  //         default: {
+  //           outputSourceFiles: true,
+  //         },
+  //       },
+  //     },
+  //     null,
+  //     2,
+  //   ),
+  // );
 
   await initFile(
     `./lib/${pkgName}.js`,
@@ -105,11 +105,11 @@ async function main() {
     ].join("\n"),
   );
 
-  await upsertNpmScript(
-    "doc",
-    "jsdoc",
-    "npx jsdoc@3.x --configure ./jsdoc.conf.json --destination ./docs --package ./package.json --readme ./README.md --access all --private --recurse ./lib/",
-  );
+  // await upsertNpmScript(
+  //   "doc",
+  //   "jsdoc",
+  //   "npx jsdoc@3.x --configure ./jsdoc.conf.json --destination ./docs --package ./package.json --readme ./README.md --access all --private --recurse ./lib/",
+  // );
 
   await upsertNpmScript(
     "fmt",
