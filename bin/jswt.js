@@ -4,11 +4,20 @@
 //require("dotenv").config({ path: ".env" });
 //require("dotenv").config({ path: ".env.secret" });
 
+//@ts-ignore
+let pkg = require("../package.json");
+
 let Fs = require("node:fs/promises");
 let Path = require("node:path");
 
-function showHelp() {
+function showVersion() {
+  console.info(`jswt v${pkg.version}`);
   console.info();
+}
+
+function showHelp() {
+  showVersion();
+
   console.info("Usage:");
   console.info("    jswt <subcommand> [opts]");
   console.info();
@@ -28,10 +37,23 @@ async function main() {
     process.exit(1);
     return;
   }
-  if ("help" === subcmd) {
-    showHelp();
-    process.exit(0);
-    return;
+
+  {
+    let wantsHelp = ["help", "--help", "-h"].includes(subcmd);
+    if (wantsHelp) {
+      showHelp();
+      process.exit(0);
+      return;
+    }
+  }
+
+  {
+    let wantsVersion = ["version", "--version", "-V"].includes(subcmd);
+    if (wantsVersion) {
+      showVersion();
+      process.exit(0);
+      return;
+    }
   }
 
   let subcmdPath = Path.join(__dirname, `jswt-${subcmd}.js`);
