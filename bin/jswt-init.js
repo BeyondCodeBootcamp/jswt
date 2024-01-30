@@ -9,9 +9,13 @@ const TSC_NAME = "tsconfig.json";
 const JSC_NAME = "jsconfig.json";
 
 var Fs = require("node:fs").promises;
+var Path = require("node:path");
 var spawn = require("node:child_process").spawn;
 
 async function main() {
+  let flags = {};
+  flags.noJshint = process.argv.includes("--no-jshint");
+
   let pkg = await readPackageJson();
   let pkgName = pkg.name;
   if (pkgName.includes("/")) {
@@ -41,16 +45,11 @@ async function main() {
     ),
   );
 
-  let prefix = await Fs.access("./lib/")
-    .then(function () {
-      return "./lib";
-    })
-    .catch(function (err) {
-      if (err.code !== "ENOENT") {
-        throw err;
-      }
-      return ".";
-    });
+  let prefix = ".";
+  let libExists = await fileExists("./lib/");
+  if (libExists) {
+    prefix = "./lib";
+  }
 
   await initFile(
     "./index.js",
@@ -63,6 +62,50 @@ async function main() {
       "",
     ].join("\n"),
   );
+
+  let eslintFile = await whichEslint(".", pkg);
+  let initJshint = !flags.noJshint && !eslintFile;
+  if (initJshint) {
+    await initFile(
+      "./.jshintrc",
+      [
+        `{`,
+        `  "browser": true,`,
+        `  "node": true,`,
+        `  "esversion": 11,`,
+        `  "curly": true,`,
+        `  "sub": true,`,
+        ``,
+        `  "bitwise": true,`,
+        `  "eqeqeq": true,`,
+        `  "forin": true,`,
+        `  "freeze": true,`,
+        `  "immed": true,`,
+        `  "latedef": "nofunc",`,
+        `  "nonbsp": true,`,
+        `  "nonew": true,`,
+        `  "plusplus": true,`,
+        `  "undef": true,`,
+        `  "unused": "vars",`,
+        `  "strict": true,`,
+        `  "maxdepth": 4,`,
+        `  "maxstatements": 100,`,
+        `  "maxcomplexity": 20`,
+        `}`,
+        ``,
+      ].join("\n"),
+    );
+
+    let extraPath = "";
+    if (prefix !== ".") {
+      extraPath = prefix;
+    }
+    await upsertNpmScript(
+      "lint",
+      "jshint",
+      `npx -p jshint@2.x -- jshint -c ./.jshintrc ./*.js ${extraPath}`,
+    );
+  }
 
   // await initFile(
   //   "./jsdoc.conf.json",
@@ -161,6 +204,56 @@ async function main() {
 
   // TODO what was I going to read from package.json?
   //console.log(pkg);
+}
+
+/**
+ * @typedef PkgConfig
+ * @prop {Object} eslintConfig
+ */
+
+/**
+ * @param {String} path
+ * @param {PkgConfig} pkg
+ */
+async function whichEslint(path, pkg) {
+  // https://eslint.org/docs/latest/use/configure/configuration-files
+  let eslintFiles = [
+    ".eslintrc.js",
+    ".eslintrc.cjs",
+    ".eslintrc.yaml",
+    ".eslintrc.yml",
+    ".eslintrc.json",
+  ];
+  for (let eslintFile of eslintFiles) {
+    let exists = await fileExists(Path.join(path, eslintFile));
+    if (exists) {
+      return eslintFile;
+    }
+  }
+
+  if (pkg.eslintConfig) {
+    return "package.json";
+  }
+
+  return null;
+}
+
+/**
+ * @param {String} path
+ */
+async function fileExists(path) {
+  let exists = await Fs.access(path)
+    .then(function () {
+      return true;
+    })
+    .catch(function (err) {
+      if (err.code !== "ENOENT") {
+        throw err;
+      }
+      return false;
+    });
+
+  return exists;
 }
 
 async function readPackageJson() {
