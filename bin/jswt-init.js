@@ -15,6 +15,7 @@ var spawn = require("node:child_process").spawn;
 async function main() {
   let flags = {};
   flags.noJshint = process.argv.includes("--no-jshint");
+  flags.noPrettier = process.argv.includes("--no-prettier");
 
   let pkg = await readPackageJson();
   let pkgName = pkg.name;
@@ -38,12 +39,33 @@ async function main() {
   let fh = await Fs.open("./typings/.gitkeep", "a");
   await fh.close();
 
-  await initFile(
-    "./.prettierignore",
-    ["docs", "node_modules", "package.json", "package-lock.json", ""].join(
-      "\n",
-    ),
-  );
+  if (!flags.noPrettier) {
+    let prettierFile = await whichPrettier(".", pkg);
+    if (!prettierFile) {
+      await initFile(
+        "./.prettierrc.json",
+        [
+          `{`,
+          `  "printWidth": 80,`,
+          `  "tabWidth": 2,`,
+          `  "singleQuote": false,`,
+          `  "bracketSpacing": true,`,
+          `  "proseWrap": "always",`,
+          `  "semi": true,`,
+          `  "trailingComma": "all"`,
+          `}`,
+          ``,
+        ].join("\n"),
+      );
+    }
+
+    await initFile(
+      "./.prettierignore",
+      ["docs", "node_modules", "package.json", "package-lock.json", ""].join(
+        "\n",
+      ),
+    );
+  }
 
   let prefix = ".";
   let libExists = await fileExists("./lib/");
@@ -163,11 +185,13 @@ async function main() {
   //   `npx jsdoc@3.x --configure ./jsdoc.conf.json --destination ./docs --package ./package.json --readme ./README.md --access all --private --recurse ${prefix}/`,
   // );
 
-  await upsertNpmScript(
-    "fmt",
-    "prettier",
-    "npx -p prettier@2.x -- prettier -w '**/*.{js,md}'",
-  );
+  if (!flags.noPrettier) {
+    await upsertNpmScript(
+      "fmt",
+      "prettier",
+      "npx -p prettier@2.x -- prettier -w '**/*.{js,md}'",
+    );
+  }
 
   await upsertNpmScript(
     "lint",
@@ -209,6 +233,7 @@ async function main() {
 /**
  * @typedef PkgConfig
  * @prop {Object} eslintConfig
+ * @prop {Object} prettier
  */
 
 /**
@@ -233,6 +258,40 @@ async function whichEslint(path, pkg) {
 
   if (pkg.eslintConfig) {
     return "package.json";
+  }
+
+  return null;
+}
+
+/**
+ * @param {String} path
+ * @param {PkgConfig} pkg
+ */
+async function whichPrettier(path, pkg) {
+  // https://prettier.io/docs/en/configuration.html
+  if (pkg.prettier) {
+    return "package.json";
+  }
+
+  let prettierFiles = [
+    ".prettierrc",
+    ".prettierrc.json",
+    ".prettierrc.yml",
+    ".prettierrc.yaml",
+    ".prettierrc.json5",
+    ".prettierrc.js",
+    ".prettierrc.config.js",
+    ".prettierrc.mjs",
+    ".prettierrc.config.mjs",
+    ".prettierrc.cjs",
+    ".prettierrc.config.cjs",
+    ".prettierrc.toml",
+  ];
+  for (let prettierFile of prettierFiles) {
+    let exists = await fileExists(Path.join(path, prettierFile));
+    if (exists) {
+      return prettierFile;
+    }
   }
 
   return null;
