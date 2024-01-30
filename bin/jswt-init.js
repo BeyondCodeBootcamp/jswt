@@ -541,7 +541,7 @@ async function upsertNpmScript(scriptName, substr, scriptValue) {
     let allArgs = [
       "pkg",
       "set",
-      `scripts.${scriptName}=${curLintScript}; ${scriptValue}`,
+      `scripts.${scriptName}=${curLintScript} && ${scriptValue}`,
     ];
     await exec("npm", allArgs);
   }
