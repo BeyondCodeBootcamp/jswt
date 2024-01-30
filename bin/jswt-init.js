@@ -118,15 +118,13 @@ async function main() {
       ].join("\n"),
     );
 
-    let extraPath = "";
+    let jshintNpx = "npx -p jshint@2.x -- jshint -c ./.jshintrc";
+    let jshintPaths = ["./*.js"];
     if (prefix !== ".") {
-      extraPath = prefix;
+      jshintPaths.push(prefix);
     }
-    await upsertNpmScript(
-      "lint",
-      "jshint",
-      `npx -p jshint@2.x -- jshint -c ./.jshintrc ./*.js ${extraPath}`,
-    );
+    jshintNpx += jshintPaths.join(" ");
+    await upsertNpmScript("lint", "jshint", jshintNpx);
   }
 
   // await initFile(
