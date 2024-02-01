@@ -527,7 +527,6 @@ async function initFile(fileName, initValue) {
  * @param {String} [substr] - don't update the script if this substring is found
  */
 async function upsertNpmScript(metaKey, scriptKey, scriptValue, substr) {
-  console.log("[UPSERT NPM SCRIPT]", metaKey, scriptKey, substr);
   {
     let result = await exec("npm", ["pkg", "get", `scripts.${scriptKey}`]);
     let curScript = result.stdout.trim();
