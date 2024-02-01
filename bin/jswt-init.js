@@ -520,26 +520,31 @@ async function initFile(fileName, initValue) {
 }
 
 /**
- * @param {String} scriptName - ex: lint, fmt, start
- * @param {String} substr - don't update the script if this substring is found
+ * @param {String} metaKey - ex: lint, fmt, start
+ * @param {String} scriptKey - ex: jshint, prettier
  * @param {String} scriptValue - the script
+ * @param {String} [substr] - don't update the script if this substring is found
  */
-async function upsertNpmScript(scriptName, substr, scriptValue) {
-  let result = await exec("npm", ["pkg", "get", `scripts.${scriptName}`]);
-  let curLintValue = result.stdout.trim();
-
-  if ("{}" === curLintValue) {
-    let allArgs = ["pkg", "set", `scripts.${scriptName}=${scriptValue}`];
-    await exec("npm", allArgs);
-    curLintValue = `"${scriptValue}"`;
+async function upsertNpmScript(metaKey, scriptKey, scriptValue, substr) {
+  if (!substr) {
+    substr = scriptKey;
   }
 
-  if (!curLintValue.includes(substr)) {
-    let curLintScript = JSON.parse(curLintValue);
+  let result = await exec("npm", ["pkg", "get", `scripts.${metaKey}`]);
+  let curScript = result.stdout.trim();
+
+  if ("{}" === curScript) {
+    let allArgs = ["pkg", "set", `scripts.${metaKey}=${scriptValue}`];
+    await exec("npm", allArgs);
+    curScript = `"${scriptValue}"`;
+  }
+
+  if (!curScript.includes(substr)) {
+    let curScriptVal = JSON.parse(curScript);
     let allArgs = [
       "pkg",
       "set",
-      `scripts.${scriptName}=${curLintScript} && ${scriptValue}`,
+      `scripts.${metaKey}=${curScriptVal} && ${scriptValue}`,
     ];
     await exec("npm", allArgs);
   }
