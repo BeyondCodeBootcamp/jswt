@@ -192,6 +192,12 @@ async function main() {
   }
 
   await upsertNpmScript(
+    "bump",
+    "bump",
+    'npm version -m "chore(release): bump to v%s"',
+  );
+
+  await upsertNpmScript(
     "lint",
     "tsc",
     "npx -p typescript@4.x -- tsc -p ./jsconfig.json",
