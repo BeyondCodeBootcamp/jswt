@@ -199,8 +199,9 @@ async function main() {
 
   await upsertNpmScript(
     "prepublish",
-    "reexport",
+    "reexport-types",
     "npx -p jswt@1.x -- reexport",
+    "reexport",
   );
 
   let jsconfigTxt = JSON.stringify(jsconfig, null, 2);
@@ -526,28 +527,43 @@ async function initFile(fileName, initValue) {
  * @param {String} [substr] - don't update the script if this substring is found
  */
 async function upsertNpmScript(metaKey, scriptKey, scriptValue, substr) {
+  console.log("[UPSERT NPM SCRIPT]", metaKey, scriptKey, substr);
+  {
+    let result = await exec("npm", ["pkg", "get", `scripts.${scriptKey}`]);
+    let curScript = result.stdout.trim();
+    if ("{}" === curScript) {
+      let allArgs = ["pkg", "set", `scripts.${scriptKey}=${scriptValue}`];
+      await exec("npm", allArgs);
+    }
+  }
+
+  if (metaKey === scriptKey) {
+    return;
+  }
+
+  let metaScript = `npm run ${scriptKey}`;
+  let result = await exec("npm", ["pkg", "get", `scripts.${metaKey}`]);
+  let curMetaScript = result.stdout.trim();
+  if ("{}" === curMetaScript) {
+    let allArgs = ["pkg", "set", `scripts.${metaKey}=${metaScript}`];
+    await exec("npm", allArgs);
+    return;
+  }
+
   if (!substr) {
     substr = scriptKey;
   }
-
-  let result = await exec("npm", ["pkg", "get", `scripts.${metaKey}`]);
-  let curScript = result.stdout.trim();
-
-  if ("{}" === curScript) {
-    let allArgs = ["pkg", "set", `scripts.${metaKey}=${scriptValue}`];
-    await exec("npm", allArgs);
-    curScript = `"${scriptValue}"`;
+  if (curMetaScript.includes(substr)) {
+    return;
   }
 
-  if (!curScript.includes(substr)) {
-    let curScriptVal = JSON.parse(curScript);
-    let allArgs = [
-      "pkg",
-      "set",
-      `scripts.${metaKey}=${curScriptVal} && ${scriptValue}`,
-    ];
-    await exec("npm", allArgs);
-  }
+  let curScriptVal = JSON.parse(curMetaScript);
+  let allArgs = [
+    "pkg",
+    "set",
+    `scripts.${metaKey}=${curScriptVal} && ${metaScript}`,
+  ];
+  await exec("npm", allArgs);
 }
 
 /**
