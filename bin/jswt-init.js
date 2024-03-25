@@ -118,7 +118,7 @@ async function main() {
       ].join("\n"),
     );
 
-    let jshintNpx = "npx -p jshint@2.x -- jshint -c ./.jshintrc";
+    let jshintNpx = "npx -p jshint@2.x -- jshint -c ./.jshintrc ";
     let jshintPaths = ["./*.js"];
     if (prefix !== ".") {
       jshintPaths.push(prefix);

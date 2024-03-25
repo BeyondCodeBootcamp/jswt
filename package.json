@@ -11,9 +11,9 @@
   "scripts": {
     "bump": "npm version -m \"chore(release): bump to v%s\"",
     "fmt": "npm run prettier",
-    "jshint": "npx -p jshint@2.x -- jshint -c ./.jshintrc./*.js ./lib",
     "lint": "npm run tsc && npm run jshint",
     "prepublish": "npm run reexport-types",
+    "jshint": "npx -p jshint@2.x -- jshint -c ./.jshintrc ./*.js ./lib",
     "prettier": "npx -p prettier@2.x -- prettier -w '**/*.{js,md}'",
     "reexport-types": "npx -p jswt@1.x -- reexport",
     "test": "node ./bin/jswt-init.js",
