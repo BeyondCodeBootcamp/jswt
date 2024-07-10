@@ -200,7 +200,7 @@ async function main() {
   await upsertNpmScript(
     "lint",
     "tsc",
-    "npx -p typescript@4.x -- tsc -p ./jsconfig.json",
+    "npx -p typescript@5.x -- tsc -p ./jsconfig.json",
   );
 
   await upsertNpmScript(
@@ -376,7 +376,7 @@ async function createTsConfig() {
     let version = await getLatest20xx();
     let args = [
       "-p",
-      "typescript@4.x",
+      "typescript@5.x",
       "--",
       "tsc",
       "--init",
@@ -418,7 +418,7 @@ async function getLatest20xx() {
   // 'es3', ... 'es2022', 'esnext'.
   let args = [
     "-p",
-    "typescript@4.x",
+    "typescript@5.x",
     "--",
     "tsc",
     "--init",
