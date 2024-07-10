@@ -46,7 +46,7 @@ Your project will look something like this:
 
 1. Runs `tsc --init` with these options:
    ```sh
-   npx -p typescript@4 -- \
+   npx -p typescript@4.x -- \
        tsc --init \
        --allowJs --alwaysStrict --checkJs \
        --moduleResolution node \
@@ -66,8 +66,8 @@ Your project will look something like this:
 You may wish to add common script commands for `fmt` and `lint`:
 
 ```sh
-npm pkg set scripts.lint="npx -p typescript@4 -- tsc -p ./jsconfig.json"
-npm pkg set scripts.fmt="npx -p prettier@2 -- prettier -w '**/*.{js,md}'"
+npm pkg set scripts.lint="npx -p typescript@4.x -- tsc -p ./jsconfig.json"
+npm pkg set scripts.fmt="npx -p prettier@2.x -- prettier -w '**/*.{js,md}'"
 ```
 
 ## Bonus: Vim Config

@@ -376,7 +376,7 @@ async function createTsConfig() {
     let version = await getLatest20xx();
     let args = [
       "-p",
-      "typescript",
+      "typescript@4.x",
       "--",
       "tsc",
       "--init",
@@ -416,7 +416,15 @@ async function createTsConfig() {
 async function getLatest20xx() {
   // error TS6046: Argument for '--target' option must be:
   // 'es3', ... 'es2022', 'esnext'.
-  let args = ["-p", "typescript", "--", "tsc", "--init", "--target", "20xx"];
+  let args = [
+    "-p",
+    "typescript@4.x",
+    "--",
+    "tsc",
+    "--init",
+    "--target",
+    "20xx",
+  ];
   return await exec("npx", args).catch(function (err) {
     let version;
     let re = /\bes\d{4}\b/g;
