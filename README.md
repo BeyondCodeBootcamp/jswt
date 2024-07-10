@@ -67,7 +67,7 @@ You may wish to add common script commands for `fmt` and `lint`:
 
 ```sh
 npm pkg set scripts.lint="npx -p typescript@5.x -- tsc -p ./jsconfig.json"
-npm pkg set scripts.fmt="npx -p prettier@2.x -- prettier -w '**/*.{js,md}'"
+npm pkg set scripts.fmt="npx -p prettier@3.x -- prettier -w '**/*.{js,md}'"
 ```
 
 ## Bonus: Vim Config

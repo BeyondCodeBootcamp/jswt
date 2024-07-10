@@ -187,7 +187,7 @@ async function main() {
     await upsertNpmScript(
       "fmt",
       "prettier",
-      "npx -p prettier@2.x -- prettier -w '**/*.{js,md}'",
+      "npx -p prettier@3.x -- prettier -w '**/*.{js,md}'",
     );
   }
 
