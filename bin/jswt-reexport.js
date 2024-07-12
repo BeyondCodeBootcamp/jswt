@@ -37,7 +37,7 @@ async function main() {
   {
     let pkgTxt = await Fs.readFile("./package.json", "utf8");
     let pkg = JSON.parse(pkgTxt);
-    let pkgName = pkg.name;
+    pkgName = pkg.name;
     if (pkgName.includes("/")) {
       let index = 1;
       index += pkgName.lastIndexOf("/");
