@@ -154,17 +154,35 @@ async function main() {
   //   ),
   // );
 
-  await initFile(
-    `${prefix}/${pkgName}.js`,
-    [
-      `"use strict";`,
-      "",
-      "let Foo = module.exports;",
-      "",
-      "Foo.answer = 42;",
-      "",
-    ].join("\n"),
-  );
+  let indexNames = ["index.js", "./index.js"];
+  let mainIsIndex = indexNames.includes(pkg.main);
+  let mainPath = `${prefix}/${pkgName}.js`;
+  if (!mainIsIndex) {
+    mainPath = pkg.main;
+  }
+
+  {
+    let mainName = toTitleCase(pkgName);
+    await initFile(
+      mainPath,
+      [
+        `"use strict";`,
+        "",
+        `let ${mainName} = module.exports;`,
+        "",
+        `${mainName}.answer = 42;`,
+        "",
+      ].join("\n"),
+    );
+  }
+
+  let hasIndex = await fileExists("./index.js");
+  if (!hasIndex) {
+    if (mainIsIndex) {
+      let allArgs = ["pkg", "set", `main=${mainPath}`];
+      await exec("npm", allArgs);
+    }
+  }
 
   await initFile(
     "./types.js",
@@ -233,6 +251,16 @@ async function main() {
 
   // TODO what was I going to read from package.json?
   //console.log(pkg);
+}
+
+/**
+ * @param {String} kebab
+ */
+function toTitleCase(kebab) {
+  let title = kebab.replace(/(^\w|[\W_]\w)/g, function (match) {
+    return match.replace(/[\W_]/, "").toUpperCase();
+  });
+  return title;
 }
 
 /**
