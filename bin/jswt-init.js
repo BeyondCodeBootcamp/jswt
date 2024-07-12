@@ -127,7 +127,7 @@ async function main() {
       jshintPaths.push(prefix);
     }
     jshintNpx += jshintPaths.join(" ");
-    await upsertNpmScript("lint", "jshint", jshintNpx);
+    void (await upsertNpmScript("lint", "jshint", jshintNpx));
   }
 
   // await initFile(
@@ -200,38 +200,38 @@ async function main() {
     );
   }
 
-  // await upsertNpmScript(
+  // void (await upsertNpmScript(
   //   "doc",
   //   "jsdoc",
   //   `npx jsdoc@3.x --configure ./jsdoc.conf.json --destination ./docs --package ./package.json --readme ./README.md --access all --private --recurse ${prefix}/`,
-  // );
+  // ));
 
   if (!flags.noPrettier) {
-    await upsertNpmScript(
+    void (await upsertNpmScript(
       "fmt",
       "prettier",
       "npx -p prettier@3.x -- prettier -w '**/*.{js,md}'",
-    );
+    ));
   }
 
-  await upsertNpmScript(
+  void (await upsertNpmScript(
     "bump",
     "bump",
     'npm version -m "chore(release): bump to v%s"',
-  );
+  ));
 
-  await upsertNpmScript(
+  void (await upsertNpmScript(
     "lint",
     "tsc",
     "npx -p typescript@5.x -- tsc -p ./jsconfig.json",
-  );
+  ));
 
-  await upsertNpmScript(
+  void (await upsertNpmScript(
     "prepublish",
     "reexport-types",
     "npx -p jswt@1.x -- reexport",
     "reexport",
-  );
+  ));
 
   let jsconfigTxt = JSON.stringify(jsconfig, null, 2);
   // for stderr / debug output
@@ -572,19 +572,22 @@ async function initFile(fileName, initValue) {
  * @param {String} scriptKey - ex: jshint, prettier
  * @param {String} scriptValue - the script
  * @param {String} [substr] - don't update the script if this substring is found
+ * @returns {Promise<String>} - the current or updated script value
  */
 async function upsertNpmScript(metaKey, scriptKey, scriptValue, substr) {
+  let newScript = "";
   {
     let result = await exec("npm", ["pkg", "get", `scripts.${scriptKey}`]);
     let curScript = result.stdout.trim();
     if ("{}" === curScript) {
+      newScript = scriptValue;
       let allArgs = ["pkg", "set", `scripts.${scriptKey}=${scriptValue}`];
       await exec("npm", allArgs);
     }
   }
 
   if (metaKey === scriptKey) {
-    return;
+    return newScript;
   }
 
   let metaScript = `npm run ${scriptKey}`;
@@ -593,23 +596,21 @@ async function upsertNpmScript(metaKey, scriptKey, scriptValue, substr) {
   if ("{}" === curMetaScript) {
     let allArgs = ["pkg", "set", `scripts.${metaKey}=${metaScript}`];
     await exec("npm", allArgs);
-    return;
+    return metaScript;
   }
 
   if (!substr) {
     substr = scriptKey;
   }
   if (curMetaScript.includes(substr)) {
-    return;
+    return curMetaScript;
   }
 
   let curScriptVal = JSON.parse(curMetaScript);
-  let allArgs = [
-    "pkg",
-    "set",
-    `scripts.${metaKey}=${curScriptVal} && ${metaScript}`,
-  ];
+  newScript = `${curScriptVal} && ${metaScript}`;
+  let allArgs = ["pkg", "set", `scripts.${metaKey}=${newScript}`];
   await exec("npm", allArgs);
+  return newScript;
 }
 
 /**
