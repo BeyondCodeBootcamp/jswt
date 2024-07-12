@@ -142,6 +142,30 @@ async function main() {
     }
   }
 
+  let hasWorkflows = await filesExist(`./.github/workflows`);
+  if (!hasWorkflows) {
+    let ghRepoRe = /\b(github\.com)[:\/]/;
+    let isOnGitHub = ghRepoRe.test(pkg?.repository?.url);
+    if (!isOnGitHub) {
+      let dotgitLink = await maybeReadFile(`.git`);
+      if (!dotgitLink) {
+        dotgitLink = `.git`;
+      }
+      let gitConfig = await maybeReadFile(`${dotgitLink}/config`);
+      if (gitConfig) {
+        isOnGitHub = ghRepoRe.test(gitConfig);
+      }
+    }
+    if (isOnGitHub) {
+      let ghaDir = `.github/workflows`;
+      let ghaFile = `.github/workflows/node.js.yml`;
+      await Fs.mkdir(`./${ghaDir}`, { recursive: true });
+      let ghActionPath = Path.join(__dirname, `../${ghaFile}`);
+      let ghActionText = await Fs.readFile(ghActionPath, "utf8");
+      await initFile(`./${ghaFile}`, ghActionText);
+    }
+  }
+
   // await initFile(
   //   "./jsdoc.conf.json",
   //   JSON.stringify(
@@ -365,6 +389,24 @@ async function fileExists(path) {
   return exists;
 }
 
+/**
+ * @param {String} path
+ */
+async function filesExist(path) {
+  let exists = await Fs.readdir(path)
+    .then(function (nodes) {
+      return nodes.length > 0;
+    })
+    .catch(function (err) {
+      if (err.code !== "ENOENT") {
+        throw err;
+      }
+      return false;
+    });
+
+  return exists;
+}
+
 async function readPackageJson() {
   let pkgTxt = await Fs.readFile(PKG_NAME, "utf8").catch(function (err) {
     err.reason = "package.json";
@@ -409,6 +451,13 @@ async function readJsConfig() {
     ];
     throw err;
   }
+}
+
+async function maybeReadFile(fileName) {
+  let txt = await Fs.readFile(fileName, "utf8").catch(function (err) {
+    return null;
+  });
+  return txt;
 }
 
 /**
