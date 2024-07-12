@@ -70,7 +70,7 @@ async function main() {
  * @param {any} err
  */
 function ignoreNoExist(err) {
-  if (err.code === "ENOEXIST") {
+  if (err.code === "ENOENT") {
     return false;
   }
   throw err;
