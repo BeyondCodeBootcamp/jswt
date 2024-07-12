@@ -130,6 +130,18 @@ async function main() {
     void (await upsertNpmScript("lint", "jshint", jshintNpx));
   }
 
+  {
+    let testRunnerScript = "node ./tests/";
+    let script = await upsertNpmScript("test", "test", testRunnerScript);
+    let hasTestRunnerScript = script.includes(testRunnerScript);
+    if (hasTestRunnerScript) {
+      await Fs.mkdir("./tests", { recursive: true });
+      let testRunnerPath = Path.join(__dirname, "../tests/index.js");
+      let testRunnerText = await Fs.readFile(testRunnerPath, "utf8");
+      await initFile("./tests/index.js", testRunnerText);
+    }
+  }
+
   // await initFile(
   //   "./jsdoc.conf.json",
   //   JSON.stringify(
