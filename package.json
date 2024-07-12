@@ -16,8 +16,8 @@
     "jshint": "npx -p jshint@2.x -- jshint -c ./.jshintrc ./*.js ./lib",
     "prettier": "npx -p prettier@3.x -- prettier -w '**/*.{js,md}'",
     "reexport-types": "npx -p jswt@1.x -- reexport",
-    "test": "node ./bin/jswt-init.js",
-    "tsc": "npx -p typescript@5.x -- tsc -p ./jsconfig.json"
+    "tsc": "npx -p typescript@5.x -- tsc -p ./jsconfig.json",
+    "test": "node ./tests/"
   },
   "repository": {
     "type": "git",
