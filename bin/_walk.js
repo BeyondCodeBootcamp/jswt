@@ -1,10 +1,10 @@
-"use strict";
+import Fs from "node:fs/promises";
+import Path from "node:path";
 
-const Fs = require("node:fs/promises");
-const Path = require("node:path");
+let Walk = {};
+Walk.skipDir = new Error("skip this directory");
 
-const skipDir = new Error("skip this directory");
-const _withFileTypes = { withFileTypes: true };
+let _withFileTypes = { withFileTypes: true };
 
 /** @typedef {import('fs').Dirent} Dirent */
 
@@ -24,7 +24,7 @@ const _withFileTypes = { withFileTypes: true };
  * @param {Dirent} [_dirent]
  * @returns {Promise<void>}
  */
-const walk = async (pathname, walkFunc, _dirent) => {
+Walk.walk = async function (pathname, walkFunc, _dirent) {
   let err;
 
   // special case of the very first run
@@ -41,7 +41,7 @@ const walk = async (pathname, walkFunc, _dirent) => {
 
   // run the user-supplied function and either skip, bail, or continue
   let cont = await walkFunc(err, pathname, _dirent).catch(function (err) {
-    if (skipDir === err) {
+    if (Walk.skipDir === err) {
       return false;
     }
     throw err;
@@ -65,11 +65,9 @@ const walk = async (pathname, walkFunc, _dirent) => {
   );
 
   for (let dirent of dirents) {
-    await walk(Path.join(pathname, dirent.name), walkFunc, dirent);
+    let path = Path.join(pathname, dirent.name);
+    await Walk.walk(path, walkFunc, dirent);
   }
 };
 
-module.exports = {
-  walk,
-  skipDir,
-};
+export default Walk;

@@ -3,6 +3,7 @@
   "version": "1.7.0",
   "description": "Turn on transpile-free type hinting for your vanilla JS projects #JSWithTypes",
   "main": "index.js",
+  "type": "module",
   "files": [
     "index.js",
     "bin/*.js",
@@ -47,5 +48,12 @@
   "homepage": "https://github.com/BeyondCodeBootcamp/jswt#readme",
   "devDependencies": {
     "@types/node": "^22.10.2"
+  },
+  "exports": {
+    ".": "./lib/jswt.js",
+    "./*": "./*"
+  },
+  "imports": {
+    "jswt": "./lib/jswt.js"
   }
 }

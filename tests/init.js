@@ -1,4 +1,3 @@
 #!/usr/bin/env node
-"use strict";
 
-require("../bin/jswt-init.js");
+import "../bin/jswt-init.js";
