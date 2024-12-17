@@ -1,8 +1,8 @@
 "use strict";
 
-let ChildProcess = require("child_process");
-let Fs = require("node:fs/promises");
-let Path = require("node:path");
+import ChildProcess from "child_process";
+import Fs from "node:fs/promises";
+import Path from "node:path";
 
 async function main() {
   console.info("TAP version 13");
