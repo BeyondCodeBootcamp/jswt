@@ -1,14 +1,19 @@
 #!/usr/bin/env node
-"use strict";
 
-//require("dotenv").config({ path: ".env" });
-//require("dotenv").config({ path: ".env.secret" });
+//import Dotenv from "dotenv";
+//Dotenv.config({ path: ".env" });
+//Dotenv.config({ path: ".env.secret" });
 
-//@ts-ignore
-let pkg = require("../package.json");
+import Fs from "node:fs/promises";
+import FsSync from "node:fs";
+import Path from "node:path";
 
-let Fs = require("node:fs/promises");
-let Path = require("node:path");
+let modulePath = import.meta.url.slice("file://".length);
+let moduleDir = Path.dirname(modulePath);
+
+let pkgPath = Path.join(moduleDir, "../package.json");
+let pkgText = FsSync.readFileSync(pkgPath, "utf8");
+let pkg = JSON.parse(pkgText);
 
 function showVersion() {
   console.info(`jswt v${pkg.version}`);
@@ -56,7 +61,7 @@ async function main() {
     }
   }
 
-  let subcmdPath = Path.join(__dirname, `jswt-${subcmd}.js`);
+  let subcmdPath = Path.join(moduleDir, `jswt-${subcmd}.js`);
   let notExists = await Fs.access(subcmdPath).catch(Object);
   if (notExists) {
     console.error(`error: '${subcmd}' is not a valid subcommand`);
@@ -65,7 +70,7 @@ async function main() {
     return;
   }
 
-  await require(`./jswt-${subcmd}.js`);
+  await import(`./jswt-${subcmd}.js`);
 }
 
 main().catch(function (err) {
