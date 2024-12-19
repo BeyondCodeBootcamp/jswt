@@ -7,14 +7,23 @@ Turn on transpile-free type hinting for your vanilla JS projects #JSWithTypes
    npm init
    ```
 2. Turn on type linting 💪
+
    ```sh
    # Create a properly configured `jsconfig.json`
-   npx jswt init
+   npx -p jswt@2.x -- jswt init
+
+   # Install @types/node, if needed
+   npm install --save '@types/node'
    ```
+
 3. Profit!
 
 Works with **VS Code** out-of-the-box, and
 [Vim + ale](https://webinstall.dev/vim-essentials).
+
+## CommonJS vs ESM
+
+Use v1 for CommonJS, or v2 for ESM.
 
 ## Watch the Presentation!
 
@@ -49,13 +58,14 @@ Your project will look something like this:
    npx -p typescript@5.x -- \
        tsc --init \
        --allowJs --alwaysStrict --checkJs \
-       --moduleResolution node \
-       --noEmit --noImplicitAny --target es2022 \
+       --module nextnode --moduleResolution nextnode \
+       --noEmit --noImplicitAny --target es2024 \
        --typeRoots './typings,./node_modules/@types'
    ```
 2. Adds the following keys:
    ```txt
-   "include": ["*.js", "bin/**/*.js", "lib/**/*.js", "src/**/*.js"]`
+   "paths": { "foo": ["./foo.js"], "foo/*": ["./*"] },
+   "include": ["*.js", "bin/**/*.js", "lib/**/*.js", "src/**/*.js"]`,
    "exclude": ["node_modules"]
    ```
 3. Renames `tsconfig.json` to `jsconfig.json` \
