@@ -3,6 +3,12 @@
   "version": "1.6.3",
   "description": "Turn on transpile-free type hinting for your vanilla JS projects #JSWithTypes",
   "main": "index.js",
+  "files": [
+    "index.js",
+    "lib/*.js",
+    "bin/*.js",
+    "tests/*.js"
+  ],
   "bin": {
     "jswt": "bin/jswt.js",
     "init": "bin/jswt-init.js",
