@@ -281,10 +281,10 @@ async function main() {
       let allArgs = [
         "pkg",
         "set",
-        `files[]=index.js`,
-        `files[]=bin/*.js`,
-        `files[]=lib/*.js`,
-        `files[]=tests/*.js`,
+        `files[]=${mainPath}`,
+        `files[]=./bin/*.js`,
+        `files[]=./lib/*.js`,
+        `files[]=./tests/*.js`,
       ];
       await exec("npm", allArgs);
       await sortAndWritePackageJson();
