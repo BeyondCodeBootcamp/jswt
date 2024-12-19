@@ -551,7 +551,13 @@ async function getLatest20xx() {
  */
 async function createJsConfig(pkg, tsconfigTxt) {
   if (!tsconfigTxt.includes(`"include":`)) {
-    let includables = ["*.js", "bin/**/*.js", "lib/**/*.js", "src/**/*.js"];
+    let includables = [
+      "*.js",
+      "bin/**/*.js",
+      "lib/**/*.js",
+      "src/**/*.js",
+      "tests/**/*.js",
+    ];
     let includablesStr = JSON.stringify(includables, null, 2);
     includablesStr = includablesStr.replace(/^/gm, "  ");
     includablesStr = includablesStr.trim();
