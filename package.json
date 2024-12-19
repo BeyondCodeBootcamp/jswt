@@ -1,6 +1,6 @@
 {
   "name": "jswt",
-  "version": "1.6.3",
+  "version": "1.7.0",
   "description": "Turn on transpile-free type hinting for your vanilla JS projects #JSWithTypes",
   "main": "index.js",
   "files": [
