@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "files": [
+    ".github/*",
     "index.js",
     "bin/*.js",
     "lib/*.js",
