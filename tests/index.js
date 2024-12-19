@@ -1,24 +1,24 @@
-'use strict';
+"use strict";
 
-let ChildProcess = require('child_process');
-let Fs = require('node:fs/promises');
-let Path = require('node:path');
+let ChildProcess = require("child_process");
+let Fs = require("node:fs/promises");
+let Path = require("node:path");
 
 async function main() {
-  console.info('TAP version 13');
+  console.info("TAP version 13");
 
   let dirents = await Fs.readdir(__dirname, { withFileTypes: true });
 
   let failures = 0;
   let count = 0;
   for (let dirent of dirents) {
-    if (dirent.name === 'index.js') {
+    if (dirent.name === "index.js") {
       continue;
     }
 
     count += 1;
     let direntPath = Path.join(__dirname, dirent.name);
-    let relPath = Path.relative('.', direntPath);
+    let relPath = Path.relative(".", direntPath);
 
     let success = await handleEach(count, relPath);
     if (!success) {
@@ -45,7 +45,7 @@ async function main() {
 }
 
 async function handleEach(count, relPath) {
-  let success = await exec('node', [relPath])
+  let success = await exec("node", [relPath])
     .then(function (result) {
       console.info(`ok ${count} - ${relPath}`);
       return true;
@@ -71,19 +71,19 @@ async function exec(exe, args) {
     let stdout = [];
     let stderr = [];
 
-    cmd.stdout.on('data', function (data) {
-      stdout.push(data.toString('utf8'));
+    cmd.stdout.on("data", function (data) {
+      stdout.push(data.toString("utf8"));
     });
 
-    cmd.stderr.on('data', function (data) {
-      stderr.push(data.toString('utf8'));
+    cmd.stderr.on("data", function (data) {
+      stderr.push(data.toString("utf8"));
     });
 
-    cmd.on('close', function (code) {
+    cmd.on("close", function (code) {
       let result = {
         code: code,
-        stdout: stdout.join(''),
-        stderr: stderr.join(''),
+        stdout: stdout.join(""),
+        stderr: stderr.join(""),
       };
 
       if (!code) {
@@ -103,7 +103,7 @@ main()
     process.exit(0);
   })
   .catch(function (err) {
-    console.error('Fail:');
+    console.error("Fail:");
     console.error(err.stack || err);
     process.exit(1);
   });
