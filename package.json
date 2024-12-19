@@ -4,6 +4,12 @@
   "description": "Turn on transpile-free type hinting for your vanilla JS projects #JSWithTypes",
   "main": "index.js",
   "type": "module",
+  "files": [
+      "index.js",
+      "lib/*.js",
+      "bin/*",
+      "tests/*"
+  ],
   "bin": {
     "jswt": "bin/jswt.js",
     "init": "bin/jswt-init.js",
@@ -41,6 +47,5 @@
   },
   "homepage": "https://github.com/BeyondCodeBootcamp/jswt#readme",
   "devDependencies": {
-    "@types/node": "^18.7.16"
   }
 }
