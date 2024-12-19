@@ -266,7 +266,7 @@ async function main() {
   void (await upsertNpmScript(
     "lint",
     "tsc",
-    "npx -p typescript@5.x -- tsc -p ./jsconfig.json",
+    "! npx -p typescript@5.x -- tsc -p ./jsconfig.json | grep '\\.js(\\d\\+,\\d\\+): error' | grep -v '\\<node_modules/'",
   ));
 
   void (await upsertNpmScript(
