@@ -4,6 +4,7 @@
   "description": "Turn on transpile-free type hinting for your vanilla JS projects #JSWithTypes",
   "main": "index.js",
   "files": [
+    ".github/*",
     "index.js",
     "bin/*.js",
     "lib/*.js",
