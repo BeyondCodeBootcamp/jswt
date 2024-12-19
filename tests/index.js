@@ -44,6 +44,10 @@ async function main() {
   }
 }
 
+/**
+ * @param {Number} count
+ * @param {String} relPath
+ */
 async function handleEach(count, relPath) {
   let success = await exec("node", [relPath])
     .then(function (result) {
@@ -64,11 +68,17 @@ async function handleEach(count, relPath) {
   return success;
 }
 
+/**
+ * @param {String} exe
+ * @param {Array<String>} args
+ */
 async function exec(exe, args) {
   return new Promise(function (resolve, reject) {
     let cmd = ChildProcess.spawn(exe, args);
 
+    /** @type {Array<String>} */
     let stdout = [];
+    /** @type {Array<String>} */
     let stderr = [];
 
     cmd.stdout.on("data", function (data) {
