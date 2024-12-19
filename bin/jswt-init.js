@@ -106,6 +106,9 @@ async function main() {
       "./.jshintrc",
       [
         `{`,
+        `  "globals": {`,
+        `    "crypto": true`,
+        `  },`,
         `  "module": true,`,
         `  "browser": true,`,
         `  "node": true,`,
