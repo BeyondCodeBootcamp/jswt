@@ -13,6 +13,7 @@ var Path = require("node:path");
 var spawn = require("node:child_process").spawn;
 
 async function main() {
+  /* jshint maxcomplexity: 25 */
   let flags = {};
   flags.noJshint = process.argv.includes("--no-jshint");
   flags.noPrettier = process.argv.includes("--no-prettier");
@@ -453,6 +454,9 @@ async function readJsConfig() {
   }
 }
 
+/**
+ * @param {String} fileName
+ */
 async function maybeReadFile(fileName) {
   let txt = await Fs.readFile(fileName, "utf8").catch(function (err) {
     return null;
