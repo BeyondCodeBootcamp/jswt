@@ -14,7 +14,9 @@ var spawn = require("node:child_process").spawn;
 
 async function main() {
   /* jshint maxcomplexity: 25 */
+  /* jshint maxstatements: 300 */
   let flags = {};
+  flags.noFiles = process.argv.includes("--no-files");
   flags.noJshint = process.argv.includes("--no-jshint");
   flags.noPrettier = process.argv.includes("--no-prettier");
 
@@ -262,6 +264,22 @@ async function main() {
     "bump",
     'npm version -m "chore(release): bump to v%s"',
   ));
+
+  if (!flags.noFiles) {
+    let result = await exec("npm", ["pkg", "get", "files"]);
+    let curScript = result.stdout.trim();
+    if ("{}" === curScript) {
+      let allArgs = [
+        "pkg",
+        "set",
+        `files[]=index.js`,
+        `files[]=bin/*.js`,
+        `files[]=lib/*.js`,
+        `files[]=tests/*.js`,
+      ];
+      await exec("npm", allArgs);
+    }
+  }
 
   void (await upsertNpmScript(
     "lint",
