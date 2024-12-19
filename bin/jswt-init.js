@@ -133,7 +133,13 @@ async function main() {
 
   {
     let testRunnerScript = "node ./tests/";
-    let script = await upsertNpmScript("test", "test", testRunnerScript);
+    let script = await upsertNpmScript(
+      "test",
+      "test",
+      testRunnerScript,
+      "test",
+      '"echo \\"Error: no test specified\\" && exit 1"',
+    );
     let hasTestRunnerScript = script.includes(testRunnerScript);
     if (hasTestRunnerScript) {
       await Fs.mkdir("./tests", { recursive: true });
@@ -637,14 +643,21 @@ async function initFile(fileName, initValue) {
  * @param {String} scriptKey - ex: jshint, prettier
  * @param {String} scriptValue - the script
  * @param {String} [substr] - don't update the script if this substring is found
+ * @param {String} [emptyVal] - treat this the same as an empty string
  * @returns {Promise<String>} - the current or updated script value
  */
-async function upsertNpmScript(metaKey, scriptKey, scriptValue, substr) {
+async function upsertNpmScript(
+  metaKey,
+  scriptKey,
+  scriptValue,
+  substr,
+  emptyVal,
+) {
   let newScript = "";
   {
     let result = await exec("npm", ["pkg", "get", `scripts.${scriptKey}`]);
     let curScript = result.stdout.trim();
-    if ("{}" === curScript) {
+    if ("{}" === curScript || emptyVal === curScript) {
       newScript = scriptValue;
       let allArgs = ["pkg", "set", `scripts.${scriptKey}=${scriptValue}`];
       await exec("npm", allArgs);
