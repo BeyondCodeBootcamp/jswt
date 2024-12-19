@@ -2,11 +2,10 @@
   "name": "jswt",
   "version": "2.0.1",
   "description": "Turn on transpile-free type hinting for your vanilla JS projects #JSWithTypes",
-  "main": "index.js",
-  "type": "module",
+  "main": "./jswt.js",
   "files": [
     ".github/*",
-    "index.js",
+    "jswt.js",
     "bin/*.js",
     "lib/*.js",
     "tests/*.js"
@@ -15,6 +14,14 @@
     "jswt": "bin/jswt.js",
     "init": "bin/jswt-init.js",
     "reexport": "bin/jswt-reexport.js"
+  },
+  "type": "module",
+  "imports": {
+    "jswt": "./jswt.js"
+  },
+  "exports": {
+    ".": "./jswt.js",
+    "./*": "./*"
   },
   "scripts": {
     "bump": "npm version -m \"chore(release): bump to v%s\"",
@@ -49,12 +56,5 @@
   "homepage": "https://github.com/BeyondCodeBootcamp/jswt#readme",
   "devDependencies": {
     "@types/node": "^22.10.2"
-  },
-  "exports": {
-    ".": "./lib/jswt.js",
-    "./*": "./*"
-  },
-  "imports": {
-    "jswt": "./lib/jswt.js"
   }
 }
