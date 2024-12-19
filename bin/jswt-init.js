@@ -553,6 +553,9 @@ async function createJsConfig(pkg, tsconfigTxt) {
   if (!tsconfigTxt.includes(`"include":`)) {
     let includables = ["*.js", "bin/**/*.js", "lib/**/*.js", "src/**/*.js"];
     let includablesStr = JSON.stringify(includables, null, 2);
+    includablesStr = includablesStr.replace(/^/gm, "  ");
+    includablesStr = includablesStr.trim();
+
     let includeLine = `,\n  "include": ${includablesStr}`;
     tsconfigTxt = tsconfigTxt.replace(/\n}[\s\n]*$/m, `${includeLine}\n}`);
   }
