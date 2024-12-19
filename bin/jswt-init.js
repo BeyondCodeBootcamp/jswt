@@ -753,6 +753,7 @@ async function sortAndWritePackageJson() {
     "description",
     "main",
     "files",
+    "bin",
     "type",
     "imports",
     "exports",
