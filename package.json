@@ -5,10 +5,10 @@
   "main": "index.js",
   "type": "module",
   "files": [
-      "index.js",
-      "lib/*.js",
-      "bin/*",
-      "tests/*"
+    "index.js",
+    "lib/*.js",
+    "bin/*",
+    "tests/*"
   ],
   "bin": {
     "jswt": "bin/jswt.js",
@@ -47,5 +47,6 @@
   },
   "homepage": "https://github.com/BeyondCodeBootcamp/jswt#readme",
   "devDependencies": {
+    "@types/node": "^22.10.2"
   }
 }
