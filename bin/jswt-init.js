@@ -217,7 +217,9 @@ async function main() {
   let mainIsIndex = indexNames.includes(pkg.main);
   let mainPath = `${prefix}/${pkgName}.js`;
   if (!mainIsIndex) {
-    mainPath = pkg.main;
+    // ensures that filepath has leading './'
+    mainPath = Path.relative(".", pkg.main);
+    mainPath = `./${mainPath}`;
   }
 
   {
