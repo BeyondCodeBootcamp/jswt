@@ -95,6 +95,7 @@ async function main() {
     jsconfig = await createJsConfig(
       pkg,
       tsconfigTxt,
+      prefix,
       `${prefix}/${pkgName}.js`,
     );
   }
@@ -318,7 +319,7 @@ async function main() {
         "set",
         "type=module",
         `exports[.]=${mainPath}`,
-        `exports[./*]=./*`,
+        `exports[./*]=${prefix}/*`,
       ];
       await exec("npm", allArgs);
       await sortAndWritePackageJson();
@@ -334,6 +335,7 @@ async function main() {
         "set",
         "type=module",
         `imports[${pkg.name}]=${mainPath}`,
+        `imports[${pkg.name}/]=${prefix}/`,
       ];
       await exec("npm", allArgs);
       await sortAndWritePackageJson();
@@ -345,7 +347,7 @@ async function main() {
           `  {`,
           `    "imports": {`,
           `      "${pkg.name}": "${mainPath}",`,
-          `      "${pkg.name}/": "./"`,
+          `      "${pkg.name}/": "${prefix}/"`,
           `    }`,
           `  }`,
           `</script>`,
@@ -628,10 +630,11 @@ async function getLatest20xx() {
  * @param {Object} pkg
  * @param {String} pkg.name
  * @param {String} tsconfigTxt
+ * @param {String} prefix
  * @param {String} mainPath
  * @returns
  */
-async function createJsConfig(pkg, tsconfigTxt, mainPath) {
+async function createJsConfig(pkg, tsconfigTxt, prefix, mainPath) {
   if (!tsconfigTxt.includes(`"include":`)) {
     let includables = [
       "*.js",
@@ -651,7 +654,7 @@ async function createJsConfig(pkg, tsconfigTxt, mainPath) {
   {
     let lines = [
       `      "${pkg.name}": ["${mainPath}"]`,
-      `      "${pkg.name}/*": ["./*"]`,
+      `      "${pkg.name}/*": ["${prefix}/*"]`,
     ];
     let str = lines.join(`,\n`);
     tsconfigTxt = tsconfigTxt.replace(
