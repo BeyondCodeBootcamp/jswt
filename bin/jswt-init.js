@@ -290,7 +290,6 @@ async function main() {
         `files[]=${mainFilePath}`,
         `files[]=./bin/*.js`,
         `files[]=./lib/*.js`,
-        `files[]=./tests/*.js`,
       ];
       await exec("npm", allArgs);
       await sortAndWritePackageJson();
