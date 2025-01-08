@@ -1,6 +1,7 @@
 {
   "globals": {
-    "crypto": true
+    "crypto": true,
+    "EventSource": true
   },
   "module": true,
   "browser": true,

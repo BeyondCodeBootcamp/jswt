@@ -109,7 +109,8 @@ async function main() {
       [
         `{`,
         `  "globals": {`,
-        `    "crypto": true`,
+        `    "crypto": true,`,
+        `    "EventSource": true`,
         `  },`,
         `  "module": true,`,
         `  "browser": true,`,
